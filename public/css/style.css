@@ -41,3 +41,26 @@ footer {
     background-color:#004d99;
     color: #fff;
 }
+
+.cancelbtn, .deletebtn, .updatebtn {
+    float: left;
+    width: 50%;
+    margin-top: 5%;
+}
+
+.deletebtn:hover {
+    background-color: #970000 !important;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.has-error input, .has-error select {
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 1) !important;
+    padding: 3px 0px 3px 3px;
+    border: 1px solid rgba(255, 0, 0, 1) !important;
+}

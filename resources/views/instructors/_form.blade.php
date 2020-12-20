@@ -1,17 +1,17 @@
 
 @if(!isset($instructor))
-<div class="form-group">
+<div class="form-group @error('user_id') has-error @enderror">
     {{Form::label('user_id', 'Select User')}}
     {{Form::select('user_id', \App\User::list(), null, ['class'=>'form-control', 'placeholder'=>'Select User'])}}
 </div>
 @endif
 
-<div class="form-group">
+<div class="form-group @error('aoe') has-error @enderror">
     {{Form::label('aoe', 'Expertise')}}
     {{Form::text('aoe', null, ['class'=>'form-control'])}}
 </div>
 
-<div class="form-group">
+<div class="form-group @error('rating') has-error @enderror">
     {{Form::label('rating', 'Rating')}}
     {{Form::select('rating', [
         '1' => 1,

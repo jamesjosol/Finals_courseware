@@ -17,20 +17,28 @@ Route::get('/','SiteController@index');
 
 Route::get('/users', 'UserController@index');
 Route::post('/users', 'UserController@store');
-Route::patch('/users/{id}', 'UserController@update');
 Route::get('/users/create', 'UserController@create');
 Route::get('/users/edit/{id}', 'UserController@edit');
+Route::patch('/users/{id}', 'UserController@update');
+Route::delete('/users/{id}', 'UserController@destroy');
 
 Route::get('/instructors', 'InstructorController@index');
 Route::post('/instructors', 'InstructorController@store');
-Route::patch('/instructors/{id}', 'InstructorController@update');
 Route::get('/instructors/create', 'InstructorController@create');
-Route::get('/instructors/edit/{id}', 'InstructorController@edit');
+Route::get('/instructors/edit/{instructor}', 'InstructorController@edit');
+Route::patch('/instructors/{instructor}', 'InstructorController@update');
+Route::delete('/instructors/{instructor}', 'InstructorController@destroy');
 
 Route::get('/learners', 'LearnerController@index');
 Route::post('/learners', 'LearnerController@store');
-Route::patch('/learners/{id}', 'LearnerController@update');
 Route::get('/learners/create', 'LearnerController@create');
-Route::get('/learners/edit/{id}', 'LearnerController@edit');
+Route::get('/learners/edit/{learner}', 'LearnerController@edit');
+Route::patch('/learners/{learner}', 'LearnerController@update');
+Route::delete('/learners/{learner}', 'LearnerController@destroy');
 
 Route::get('/courses', 'CourseController@index');
+Route::post('/courses', 'CourseController@store');
+Route::get('/courses/create', 'CourseController@create');
+Route::get('/courses/edit/{course}', 'CourseController@edit');
+Route::patch('/courses/{course}', 'CourseController@update');
+Route::delete('/courses/{course}', 'CourseController@destroy');

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Learner;
+use App\Instructor;
+use App\Course;
 
 class UserController extends Controller
 {
@@ -20,7 +23,7 @@ class UserController extends Controller
         $this->validate($request, [
             'lname' => 'required',
             'fname' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required'
         ]);
 
@@ -46,11 +49,33 @@ class UserController extends Controller
         $this->validate($request, [
             'lname' => 'required',
             'fname' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.$user->id,
         ]);
 
         $user->update($request->all());
 
         return redirect('/users')->with('info', "The record of $user->fname $user->lname has been updated.");
+    }
+
+    public function destroy(Request $request, $id) {
+        $userId = $request['user_id'];
+
+        $user = User::find($userId);
+        
+        $name = $user->lname . ", " . $user->fname;
+
+        /** deleting child tables first to avoid constraint violation */
+        $instructors = Instructor::where('user_id', $userId)->get();
+        
+        foreach($instructors as $i) {
+            Course::where('instructor_id', $i->id)->delete();
+        }
+        
+        Learner::where('user_id', $userId)->delete();
+        Instructor::where('user_id', $userId)->delete();
+        
+        $user->delete();
+
+        return redirect("/users")->with('info', "The user $name has been deleted");
     }
 }

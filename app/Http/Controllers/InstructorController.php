@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Instructor;
+use App\Course;
 
 class InstructorController extends Controller
 {
@@ -18,10 +19,11 @@ class InstructorController extends Controller
 
     public function store(Request $request) {
         $this->validate($request, [
-            'user_id' => 'required|numeric',
+            'user_id' => 'required|numeric|unique:instructors',
             'aoe' => 'required',
             'rating' => 'required|numeric',
-        ]);
+        ],  ['user_id.unique' => 'This instructor already exist.'] //custom error message
+        );
 
         Instructor::create($request->all());
 
@@ -29,14 +31,13 @@ class InstructorController extends Controller
     }
 
 
-    public function edit($id) {
-        $instructor = Instructor::find($id);
-
-        return view('instructors.edit', ['instructor'=>$instructor]);
+    public function edit(Instructor $instructor) {
+        
+        return view('instructors.edit', compact('instructor'));
+        //return view('instructors.edit', ['instructor'=>$instructor]);
     }
 
-    public function update(Request $request, $id) {
-        $instructor = Instructor::find($id);
+    public function update(Instructor $instructor, Request $request) {
 
         $this->validate($request, [
             'aoe' => 'required',
@@ -48,5 +49,14 @@ class InstructorController extends Controller
         return redirect('/instructors')->with('info', "Instructor " . $instructor->user->fname . " " . $instructor->user->lname . " has been updated.");
     }
 
+    public function destroy(Instructor $instructor, Request $request) {
+        $name = $instructor->user->lname . ", " . $instructor->user->fname;
+        
+        /** deleting child tables first to avoid constraint violation */
+        Course::where('instructor_id', $instructor->id)->delete();
+        $instructor->delete();
+
+        return redirect("/instructors")->with('info', "The instructor $name has been deleted");
+    }
 
 }
